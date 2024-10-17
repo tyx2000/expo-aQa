@@ -17,7 +17,7 @@ export default function TabLayout() {
   console.log(pathname);
 
   return (
-    <View style={{ paddingTop: top, height: '100%' }}>
+    <View style={{ paddingTop: top, height: '100%', backgroundColor: '#fff' }}>
       <Header />
       <Tabs
         screenOptions={{
@@ -32,7 +32,7 @@ export default function TabLayout() {
             tabBarIcon: ({ color, focused }) => (
               <TabBarIcon
                 name={focused ? 'home' : 'home-outline'}
-                color={color}
+                color={focused ? '#1e7ed4' : '#aad3f8'}
               />
             ),
           }}
@@ -43,8 +43,8 @@ export default function TabLayout() {
             title: '',
             tabBarIcon: ({ color, focused }) => (
               <TabBarIcon
-                name={focused ? 'code-slash' : 'code-slash-outline'}
-                color={color}
+                name={focused ? 'add-circle' : 'add-circle-outline'}
+                color={focused ? '#1e7ed4' : '#aad3f8'}
               />
             ),
           }}
@@ -55,8 +55,8 @@ export default function TabLayout() {
             title: '',
             tabBarIcon: ({ color, focused }) => (
               <TabBarIcon
-                name={focused ? 'code-slash' : 'code-slash-outline'}
-                color={color}
+                name={focused ? 'accessibility' : 'accessibility-outline'}
+                color={focused ? '#1e7ed4' : '#aad3f8'}
               />
             ),
           }}

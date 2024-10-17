@@ -4,29 +4,49 @@ import {
   Platform,
   Modal,
   View,
+  Text,
+  Alert,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { supabase } from '@/utils/supabase';
-import { useEffect } from 'react';
-import { useRoute } from '@react-navigation/core';
+import { useEffect, useState } from 'react';
 import { router } from 'expo-router';
 // import { HelloWave } from '@/components/HelloWave';
 // import ParallaxScrollView from '@/components/ParallaxScrollView';
 // import { ThemedText } from '@/components/ThemedText';
 // import { ThemedView } from '@/components/ThemedView';
 
-export default function HomeScreen() {
-  const route = useRoute();
-  const insets = useSafeAreaInsets();
+import { ActivityIndicator, MD2Colors } from 'react-native-paper';
+import { FlashList } from '@shopify/flash-list';
+import Toast from 'react-native-root-toast';
+import QuestionListItem from '@/components/QuestionListItem';
 
-  console.log(insets);
+export default function HomeScreen() {
+  const insets = useSafeAreaInsets();
+  const [loading, setLoading] = useState(false);
+  const [list, setList] = useState([]);
 
   const getQuestion = async () => {
-    router.navigate('/userinfo');
+    const { data, error, statusText } = await supabase
+      .from('question')
+      .select();
+    Toast.show('hello', {
+      // duration: 5000,
+      animation: true,
+    });
+    console.log('--------', data, error, statusText);
+    if (error) {
+      Alert.alert(statusText);
+    } else {
+      // setList(data);
+    }
+    setLoading(false);
   };
-  //   const data = await supabase.from('question').select();
-  //   console.log('--------', data);
-  // };
+
+  useEffect(() => {
+    setLoading(true);
+    getQuestion();
+  }, []);
 
   return (
     // <ParallaxScrollView
@@ -70,17 +90,35 @@ export default function HomeScreen() {
     //   </ThemedView>
     // </ParallaxScrollView>
 
-    <TouchableOpacity onPress={getQuestion}>
-      <View style={styles.container}></View>
-    </TouchableOpacity>
+    <View style={styles.container}>
+      <FlashList
+        onRefresh={() => {
+          setLoading(true);
+          getQuestion();
+        }}
+        refreshing={loading}
+        estimatedItemSize={100}
+        data={list}
+        renderItem={({ item, index }) => (
+          <QuestionListItem item={item} index={index} />
+        )}
+        ListEmptyComponent={
+          <View>
+            <Text>empty</Text>
+          </View>
+        }
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: 200,
-    backgroundColor: 'pink',
+    height: '100%',
+    backgroundColor: '#eee',
+    // display: 'flex',
+    // justifyContent: 'center',
+    // alignItems: 'center',
   },
 
   titleContainer: {

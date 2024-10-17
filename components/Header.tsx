@@ -1,14 +1,44 @@
 import { View, TextInput, StyleSheet } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import ReAnimated, {
+  useSharedValue,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
+import { useEffect } from 'react';
 
-export default function ({}) {
+export default function () {
+  const borderRadius = useSharedValue(10);
+  const backgroundColor = useSharedValue('#aad3f8');
+
   return (
-    <View style={styles.container}>
-      <View style={styles.logo}></View>
-      <View style={styles.search}>
-        <TextInput style={styles.searchInput} placeholder="Search" />
-        <View style={styles.searchIcon}></View>
+    <View style={[styles.container]}>
+      <View style={styles.logo}>
+        <Ionicons size={40} name="logo-amplify" color="#1e7ed4" />
       </View>
-      <View style={styles.logo}></View>
+      <ReAnimated.View
+        style={[styles.search, { borderRadius, backgroundColor }]}
+      >
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Touch To Search"
+          placeholderTextColor="#1e7ed4"
+          onFocus={() => {
+            borderRadius.value = withSpring(25);
+            backgroundColor.value = withTiming('#1e7ed4');
+          }}
+          onBlur={() => {
+            borderRadius.value = withSpring(10);
+            backgroundColor.value = withTiming('#aad3f8');
+          }}
+        />
+        <View style={styles.searchIcon}>
+          <Ionicons size={20} name="search" color="purple" />
+        </View>
+      </ReAnimated.View>
+      <View style={styles.logo}>
+        <Ionicons size={30} name="notifications-outline" color="#1e7ed4" />
+      </View>
     </View>
   );
 }
@@ -16,7 +46,6 @@ export default function ({}) {
 const styles = StyleSheet.create({
   container: {
     height: 60,
-    backgroundColor: '#eee',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -27,9 +56,9 @@ const styles = StyleSheet.create({
   logo: {
     width: 45,
     height: 45,
-    borderWidth: 1,
-    borderColor: '#000',
-    borderStyle: 'solid',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   search: {
     flex: 1,
@@ -37,14 +66,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
-    backgroundColor: '#fff',
   },
   searchInput: {
     flex: 1,
     height: 45,
-    borderWidth: 1,
-    borderColor: '#000',
-    borderStyle: 'solid',
     paddingHorizontal: 8,
     fontSize: 16,
     fontWeight: 'bold',
@@ -53,8 +78,8 @@ const styles = StyleSheet.create({
   searchIcon: {
     width: 30,
     height: 30,
-    borderWidth: 1,
-    borderColor: '#000',
-    borderStyle: 'solid',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
