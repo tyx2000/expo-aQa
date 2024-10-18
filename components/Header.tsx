@@ -33,7 +33,7 @@ export default function () {
           }}
         />
         <View style={styles.searchIcon}>
-          <Ionicons size={20} name="search" color="purple" />
+          <Ionicons size={20} name="search" color="#0601b4" />
         </View>
       </ReAnimated.View>
       <View style={styles.logo}>
@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 8,
     gap: 8,
+    backgroundColor: '#fff',
   },
   logo: {
     width: 45,

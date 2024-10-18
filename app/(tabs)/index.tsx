@@ -7,40 +7,35 @@ import {
   Text,
   Alert,
 } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { supabase } from '@/utils/supabase';
-import { useEffect, useState } from 'react';
-import { router } from 'expo-router';
+import React, { useEffect, useState } from 'react';
 // import { HelloWave } from '@/components/HelloWave';
 // import ParallaxScrollView from '@/components/ParallaxScrollView';
 // import { ThemedText } from '@/components/ThemedText';
 // import { ThemedView } from '@/components/ThemedView';
 
-import { ActivityIndicator, MD2Colors } from 'react-native-paper';
 import { FlashList } from '@shopify/flash-list';
-import Toast from 'react-native-root-toast';
 import QuestionListItem from '@/components/QuestionListItem';
+import Header from '@/components/Header';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function HomeScreen() {
-  const insets = useSafeAreaInsets();
   const [loading, setLoading] = useState(false);
-  const [list, setList] = useState([]);
+  const [list, setList] = useState<any>([]);
 
   const getQuestion = async () => {
-    const { data, error, statusText } = await supabase
-      .from('question')
-      .select();
-    Toast.show('hello', {
-      // duration: 5000,
-      animation: true,
-    });
-    console.log('--------', data, error, statusText);
-    if (error) {
-      Alert.alert(statusText);
-    } else {
-      // setList(data);
+    try {
+      const res = await supabase.from('question').select();
+      const { data, error, statusText } = res;
+      console.log(res);
+      if (data && data.length) {
+        setList(data);
+      }
+    } catch (e) {
+      Alert.alert('ERROR');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -64,7 +59,7 @@ export default function HomeScreen() {
     //   <ThemedView style={styles.stepContainer}>
     //     <ThemedText type="subtitle">Step 1: Try it</ThemedText>
     //     <ThemedText>
-    //       Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
+    //       Edit <ThemedText type="defaultSemiBold">app/(tabs)/login.tsx</ThemedText> to see changes.
     //       Press{' '}
     //       <ThemedText type="defaultSemiBold">
     //         {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
@@ -90,24 +85,50 @@ export default function HomeScreen() {
     //   </ThemedView>
     // </ParallaxScrollView>
 
+    //   const colorsValue = useSharedValue(1);
+    //   const skiaFirstColor = useValue(0);
+    //   const skiaSecondColor = useValue(0);
+    //
+    //   useSharedValueEffect(() => {
+    //     skiaFirstColor.current = interpolateColor(colorsValue.value, [0, 1], ['#FFFFFF', '#000000']);
+    //     skiaSecondColor.current = interpolateColor(colorsValue.value, [0, 1], ['#FFFFFF', '#00ff00']);
+    //   }, colorsValue); // you can pass other shared values as extra parameters
+    //
+    //   const colors = useComputedValue(() => {
+    //     return [skiaFirstColor.current, skiaSecondColor.current]
+    //   }, [skiaFirstColor, skiaSecondColor])
+    //
+    //   return (<...
+    //   <Canvas>
+    //     <LinearGradient colors={colors} />
+    //   </Canvas>
+    // </>)
+
     <View style={styles.container}>
-      <FlashList
-        onRefresh={() => {
-          setLoading(true);
-          getQuestion();
-        }}
-        refreshing={loading}
-        estimatedItemSize={100}
-        data={list}
-        renderItem={({ item, index }) => (
-          <QuestionListItem item={item} index={index} />
-        )}
-        ListEmptyComponent={
-          <View>
-            <Text>empty</Text>
-          </View>
-        }
-      />
+      <Header />
+      <LinearGradient
+        // Background Linear Gradient
+        colors={['#aad3f8', 'pink', 'lightblue', 'lightyellow']}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={{ height: '100%' }}
+      >
+        <FlashList
+          onRefresh={() => {
+            setLoading(true);
+            getQuestion();
+          }}
+          refreshing={loading}
+          estimatedItemSize={100}
+          data={list}
+          renderItem={({ item, index }) => (
+            <QuestionListItem item={item} index={index} />
+          )}
+          // ListEmptyComponent={
+          //
+          // }
+        />
+      </LinearGradient>
     </View>
   );
 }

@@ -12,6 +12,7 @@ import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
 import { PaperProvider } from 'react-native-paper';
+import { RootSiblingParent } from 'react-native-root-siblings';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -37,14 +38,24 @@ export default function RootLayout() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <SafeAreaProvider>
         <PaperProvider>
-          <Stack>
-            <Stack.Screen
-              name="(tabs)"
-              options={{ headerShown: false, animation: 'flip' }}
-            />
-            <Stack.Screen name="userinfo/index" />
-            <Stack.Screen name="+not-found" />
-          </Stack>
+          <RootSiblingParent>
+            <Stack>
+              <Stack.Screen
+                name="(tabs)"
+                options={{ headerShown: false, animation: 'flip' }}
+              />
+              <Stack.Screen name="editQuestion" />
+              <Stack.Screen name="userinfo" />
+              <Stack.Screen
+                name="login"
+                options={{
+                  presentation: 'modal',
+                  headerTitle: 'Sign in',
+                }}
+              />
+              <Stack.Screen name="+not-found" />
+            </Stack>
+          </RootSiblingParent>
         </PaperProvider>
       </SafeAreaProvider>
     </ThemeProvider>

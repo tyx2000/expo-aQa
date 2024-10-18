@@ -19,7 +19,9 @@ import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import MyQuestion from '@/components/MyQuestion';
 import MySubscribe from '@/components/MySubscribe';
 import MyAnswer from '@/components/MyAnswer';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import Header from '@/components/Header';
+import AskButton from '@/components/AskButton';
 
 const renderScene = SceneMap({
   Question: MyQuestion,
@@ -27,7 +29,7 @@ const renderScene = SceneMap({
   Answer: MyAnswer,
 });
 
-// #1e7ed4 #aad3f8
+// #1e7ed4 #aad3f8 #0601b4
 
 export default function TabTwoScreen() {
   const layout = useWindowDimensions();
@@ -65,7 +67,7 @@ export default function TabTwoScreen() {
         >
           <Text
             style={{
-              color: focused ? '#1e7ed4' : '#aad3f8',
+              color: focused ? '#0601b4' : '#aad3f8',
               fontWeight: focused ? 'bold' : 'normal',
               fontSize: focused ? 16 : 14,
               fontStyle: focused ? 'italic' : 'normal',
@@ -80,6 +82,7 @@ export default function TabTwoScreen() {
 
   return (
     <View style={styles.container}>
+      <Header />
       <TabView
         lazy
         renderLazyPlaceholder={() => <Text>loading</Text>}
@@ -89,11 +92,7 @@ export default function TabTwoScreen() {
         onIndexChange={setIndex}
         initialLayout={{ width: layout.width }}
       />
-      <TouchableOpacity onPress={() => {}} onLongPress={() => {}}>
-        <View style={styles.ask}>
-          <Ionicons name="pencil-outline" size={30} color="#1e7ed4" />
-        </View>
-      </TouchableOpacity>
+      <AskButton />
     </View>
     // <ParallaxScrollView
     //   headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
@@ -105,7 +104,7 @@ export default function TabTwoScreen() {
     //   <Collapsible title="File-based routing">
     //     <ThemedText>
     //       This app has two screens:{' '}
-    //       <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
+    //       <ThemedText type="defaultSemiBold">app/(tabs)/login.tsx</ThemedText> and{' '}
     //       <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
     //     </ThemedText>
     //     <ThemedText>
@@ -179,18 +178,7 @@ const styles = StyleSheet.create({
     height: '100%',
     position: 'relative',
   },
-  ask: {
-    width: 60,
-    height: 60,
-    backgroundColor: '#aad3f8',
-    right: 20,
-    bottom: 20,
-    borderRadius: 30,
-    position: 'absolute',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+
   headerImage: {
     color: '#808080',
     bottom: -90,

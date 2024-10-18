@@ -1,24 +1,31 @@
 import { Tabs, usePathname } from 'expo-router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
-import ReAnimated from 'react-native-reanimated';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import Header from '@/components/Header';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const { top } = useSafeAreaInsets();
-  const pathname = usePathname();
 
-  console.log(pathname);
+  useEffect(() => {
+    // createDatabase('ama').then(async (db) => {
+    //   const res = db.execAsync(`
+    //     PRAGMA journal_mode = WAL;
+    //     CREATE TABLE IF NOT EXISTS user (
+    //       id INTEGER PRIMARY KEY NOT NULL,
+    //       username TEXT NOT NULL,
+    //       password TEXT NOT NULL,
+    //       token TEXT,
+    //   `);
+    // });
+  }, []);
 
   return (
     <View style={{ paddingTop: top, height: '100%', backgroundColor: '#fff' }}>
-      <Header />
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
