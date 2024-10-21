@@ -44,7 +44,10 @@ export default function RootLayout() {
                 name="(tabs)"
                 options={{ headerShown: false, animation: 'flip' }}
               />
-              <Stack.Screen name="editQuestion" />
+              <Stack.Screen
+                name="editQuestion"
+                options={{ animation: 'fade_from_bottom' }}
+              />
               <Stack.Screen name="userinfo" />
               <Stack.Screen
                 name="login"

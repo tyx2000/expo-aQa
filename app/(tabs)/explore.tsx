@@ -21,7 +21,7 @@ import MySubscribe from '@/components/MySubscribe';
 import MyAnswer from '@/components/MyAnswer';
 import React, { useState } from 'react';
 import Header from '@/components/Header';
-import AskButton from '@/components/AskButton';
+import AskButton from '@/components/askButton/index';
 
 const renderScene = SceneMap({
   Question: MyQuestion,
